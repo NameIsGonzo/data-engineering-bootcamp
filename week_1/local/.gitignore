@@ -4,3 +4,4 @@ data_pgadmin
 scripts/.ipynb_checkpoints/
 scripts/dataset/
 scripts/testing.py
+scripts/data_testing.ipynb
