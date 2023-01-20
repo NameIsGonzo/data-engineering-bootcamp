@@ -1,7 +1,7 @@
 ny_taxi_postgres_data
 data_pgadmin
 ../../.idea/
-scripts/.ipynb_checkpoints/
-scripts/dataset/
-scripts/testing.py
-scripts/data_testing.ipynb
+dev/.ipynb_checkpoints/
+dev/dataset/
+dev/testing.py
+dev/data_testing.ipynb
