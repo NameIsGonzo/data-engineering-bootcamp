@@ -30,9 +30,9 @@ def url_to_filename(url: str) -> str:
 
 def url_to_tablename(url: str) -> str:
     try:
-        output = url.split('/')[4]
-        # Get rid of .parquet and apply name convention for db table.
-        output = output.split('_')[0]
+        output = url.split('/')[4] # Get filename yellow_tripdata_2022-01.parquet
+        output = output.split('.')[0] # Get rid of the extension
+        output = output.replace('-', '_') # Apply table name convention
         return output
     except ValueError:
         logging.warning('The url doesn\'t have the correct format')
@@ -50,11 +50,6 @@ def download_data(url: str, output: str) -> bool:
 
 
 def main():
-
-    tables = {'yellow':'yellow_tripdata',
-              'green': 'green_tripdata',
-              'fhv': 'for_hire_vehicles_tripdata',
-              'fhvhv': 'high_volume_for_hire_vehicle_tripdata'}
 
     # Set Logging level -> INFO
     logging.basicConfig(level=logging.INFO)
@@ -83,16 +78,20 @@ def main():
         return sys.exit(1)
 
     file_name = url_to_filename(url) # Get file name
-    table_name = tables.get(url_to_tablename(url)) # Get table name
+    table_name = url_to_tablename(url) # Get table name
     output = f'{file_name}.parquet' # Get file name with extension
     chunksize = 100000
 
     if download_data(url, output):
+
+        logging.info(f'Parquet file with name: {output} successfully downloaded')
+
         engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{db}') # Create engine connection
         
         df = pd.read_parquet(f'dataset/{output}', engine='pyarrow') # Read parquet into Dataframe
 
         df.head(n=0).to_sql(name=table_name, con=engine, if_exists='replace')  # We get rid of this later with dbt.
+        logging.info(f'Table created with name {table_name} in database: {db}')
 
         with tqdm(total=len(df)) as pbar:
             for _, cdf in enumerate(chunker(df, 100000)):
