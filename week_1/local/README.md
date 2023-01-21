@@ -55,12 +55,12 @@ de_bootcamp:
 	|
 	|------ README.md
 	|------ week_1:
-						|
-						|------ cloud
-						|------ local:
-											|
-											|------ dev
-											|------ test
+                |
+                |------ cloud
+                |------ local:
+                            |
+                            |------ dev
+                            |------ test
 ```
 
 Lest move into de_bootcamp/week_1/local.
@@ -156,3 +156,42 @@ environment:
 ```
 
 Once we are inside PgAdmin we need to stablish our connection between PgAdmin and our PostgreSQL database. Let’s click ‘Add New Server’ and then write ny_taxi into the name.
+
+Then lets move into the connection section in the top part of the menu. Finally we just need to write our credentials which can also be found in our docker-compose.yaml (both username and password are root)
+
+You should start seeing the PgAdmin ny_taxi dashboard. Let’s move into Python and ingest some data!
+
+Here is our python code which is going to download, decompress, generate schema and upload into PostgreSQL through SQLAlchemy + Panda.
+
+Let’s get to work! 
+
+Let’s download some data from January 2022
+
+```python
+python data_ingestion.py \
+ --user=root \
+ --password=root \
+ --host=localhost \
+ --port=5432 \
+ --db=ny_taxi \
+ --url=https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2022-01.parquet
+```
+
+If we go to our PgAdmin dashboard and write the following query
+
+```sql
+SELECT 
+count(*)
+FROM yellow_tripdata;
+```
+
+We should start seeing out data being ingested in batches of 100,00
+
+If we run the following query we will see the first 50 records in our database
+
+```sql
+SELECT
+*
+FROM yellow_tripdata
+LIMIT 50;
+```
