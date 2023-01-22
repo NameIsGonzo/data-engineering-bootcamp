@@ -84,7 +84,7 @@ def main():
 
     if download_data(url, output):
 
-        logging.info(f'Parquet file with name: {output} successfully downloaded')
+        logging.info(f'Parquet file with name: {output} successfully downloaded∏')
 
         engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{db}') # Create engine connection
         
