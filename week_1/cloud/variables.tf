@@ -3,7 +3,7 @@ locals {
 }
 
 variable "project" {
-    description = "dtc-data-eng-course"
+    description = "GCP-PROJECT-GOES-HERE"
 }
 
 variable "region" {
