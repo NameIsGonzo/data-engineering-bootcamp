@@ -84,22 +84,19 @@ def main():
 
     if download_data(url, output):
 
-        logging.info(f'Parquet file with name: {output} successfully downloaded∏')
-
-        engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{db}') # Create engine connection
-        
-        df = pd.read_parquet(f'dataset/{output}', engine='pyarrow') # Read parquet into Dataframe
-
+        logging.info(f'Parquet file with name: {output} successfully downloaded')
+        engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{db}')  # Create engine connection
+        df = pd.read_parquet(f'dataset/{output}', engine='pyarrow')  # Read parquet into Dataframe
         df.head(n=0).to_sql(name=table_name, con=engine, if_exists='replace')  # We get rid of this later with dbt.
         logging.info(f'Table created with name {table_name} in database: {db}')
 
         with tqdm(total=len(df)) as pbar:
-            for _, cdf in enumerate(chunker(df, 100000)):
+            for _, cdf in enumerate(chunker(df, chunksize)):
 
                 cdf.to_sql(name=table_name,
                     con=engine,
                     if_exists='append',
-                    chunksize=100000)
+                    chunksize=chunksize)
 
                 pbar.update(chunksize)
                 tqdm._instances.clear()
