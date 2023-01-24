@@ -20,19 +20,18 @@ Now open a new tab in your favorite web browser and go to **http://127.0.0.1:420
 ## Execute our ETL pipeline
 Go to the following directory
 ```
-de_bootcamp:
+de_bootcamp/:
 	|
 	|------ README.md
-	|------ week_1
-	|------ week_2 # Here
-	          |----- README.md
-	          |----- requirements.txt
+	|------ week_1/
+	|------ week_2/ # Here
+	          |----- local/
+	          |----- cloud/
 	          |----- dataset/
-	          |----- data_ingestion_flow.py
 ```
 and execute the python file data_ingestion_flow.py
 ```commandline
-python data_ingestion_flow.py
+python local/data_ingestion_flow.py
 ```
 You will start to see our flow and task being executed one after one.
 Additionally you can see the progress of our pipeline if you go to our Orion UI.
