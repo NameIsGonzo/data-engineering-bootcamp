@@ -44,7 +44,7 @@ def extract_data(url: str, file_name: str) -> pd.DataFrame:
 @task()
 def write_gcs(path: Path, filename: str):
     """Loads a GCS block with our credentials and uploads the file to our GCS Bucket"""
-    gcs_path = get_subdir(filename)+filename
+    gcs_path = f'{get_subdir(filename) + filename}.parquet'
     gcs_block = GcsBucket.load("datatalks-bootcamp")
     gcs_block.upload_from_path(from_path=path, to_path=gcs_path)
     return
