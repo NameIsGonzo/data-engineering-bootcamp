@@ -19,15 +19,14 @@ def filename_from_url(url: str) -> str:
         return sys.exit(1)
 
 
-@task(log_prints=True)
-def clean_data(df: pd.DataFrame, filename: str) -> str:
-    """Gets rid of record without passengers"""
-    path = f'dataset/{filename}'
-    print(f"Pre Missing passenger count: {df['passenger_count'].isin([0]).sum()}")
-    df = df[df['passenger_count'] != 0]
-    print(f"Post Missing passenger count: {df['passenger_count'].isin([0]).sum()}")
-    df.to_parquet(path, engine='pyarrow')
-    return path
+def get_subdir(filename: str) -> str:
+    try:
+        output = f"{filename.split('_')[0]}/"
+        return output
+    except ValueError as e:
+        print('The filename doesnt have the correct format')
+        print(e)
+        return sys.exit(1)
 
 
 @task()
@@ -45,17 +44,19 @@ def extract_data(url: str, file_name: str) -> pd.DataFrame:
 @task()
 def write_gcs(path: Path, filename: str):
     """Loads a GCS block with our credentials and uploads the file to our GCS Bucket"""
+    gcs_path = get_subdir(filename)+filename
     gcs_block = GcsBucket.load("datatalks-bootcamp")
-    gcs_block.upload_from_path(from_path=path, to_path=filename)
+    gcs_block.upload_from_path(from_path=path, to_path=gcs_path)
     return
 
 
 @flow()
 def etl_web_to_gcs() -> None:
+    """Main ETL flow"""
     url = 'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2022-09.parquet'
     file_name = filename_from_url(url)
     df = extract_data(url, file_name)
-    path = clean_data(df, file_name)
+    path = f'dataset/{file_name}'
     write_gcs(path, file_name)
 
 
