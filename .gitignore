@@ -5,3 +5,5 @@ terraform.tfstate
 terraform.tfstate.backup
 ../.idea/.name
 dataset/
+.prefectignore
+/cloud/__pycache__/
