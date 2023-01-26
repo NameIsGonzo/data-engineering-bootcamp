@@ -12,4 +12,3 @@ docker_dep = Deployment.build_from_flow(
 
 if __name__ == '__main__':
     docker_dep.apply()
-    
