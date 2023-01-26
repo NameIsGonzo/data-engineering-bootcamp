@@ -63,7 +63,8 @@ http://127.0.0.1:4200/
 2. Search **Docker Container** click Add +
 3. Block name should be = **prefect-zoom**
 4. Image use the one you use while creating the docker image
-   1. **<user-name>/<repository-name>:<tag>**
+
+   ```<user-name>/<repository-name>:<tag>```
 5. Set **Auto Remove** to True, otherwise everytime a run success the containers will not be destroyed.
 6. Click Create
 
