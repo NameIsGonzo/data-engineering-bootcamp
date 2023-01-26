@@ -62,7 +62,7 @@ http://127.0.0.1:4200/
 1. Once you are in the UI go to the **Blocks** section and add a new block.
 2. Search **Docker Container** click Add +
 3. Block name should be = **prefect-zoom**
-4. Image use the one you use while creating the docker image **<user-name>/<repository-name>:<tag>**
+4. Image use the one you use while creating the docker image: <user-name>/<repository-name>:<tag>
 5. Set **Auto Remove** to True, otherwise everytime a run success the containers will not be destroyed.
 6. Click Create
 
