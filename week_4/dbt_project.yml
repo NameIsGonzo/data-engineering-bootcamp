@@ -34,3 +34,8 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   taxis_rides_ny:
     # Applies to all files under models/example/
+
+  seeds:
+    taxi_rides_ny:
+      +column_types:
+        locationid: numeric
