@@ -10,3 +10,4 @@ CMD /bin/bash
 COPY ./nothing_to_see_here /opt/prefect/nothing_to_see_here
 COPY . /opt/prefect/flows
 COPY ./dataset /opt/prefect/dataset
+COPY ./schemas /opt/prefect/schemas
